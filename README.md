@@ -1,3 +1,24 @@
+## rospack (jade) - 2.2.5-0
+
+The packages in the `rospack` repository were released into the `jade` distro by running `/usr/bin/bloom-release -r jade -t jade rospack` on `Fri, 26 Dec 2014 18:09:49 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `None-0`
+- new version: `2.2.5-0`
+
+Versions of tools used:
+- bloom version: `0.5.16`
+- catkin_pkg version: `0.2.6`
+- rosdep version: `0.11.0`
+- rosdistro version: `0.4.0`
+- vcstools version: `0.1.36`
+
+
 ## rospack (hydro) - 2.1.25-0
 
 The packages in the `rospack` repository were released into the `hydro` distro by running `/usr/bin/bloom-release -r hydro -t hydro rospack` on `Tue, 14 Oct 2014 22:00:08 -0000`
