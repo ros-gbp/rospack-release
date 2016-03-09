@@ -152,7 +152,6 @@ class ROSPACK_DECL Rosstackage
     std::tr1::unordered_map<std::string, Stackage*> stackages_;
     Stackage* findWithRecrawl(const std::string& name);
     void log(const std::string& level, const std::string& msg, bool append_errno);
-    void clearStackages();
     void addStackage(const std::string& path);
     void crawlDetail(const std::string& path,
                      bool force,
