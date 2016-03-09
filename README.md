@@ -1,3 +1,26 @@
+## rospack (indigo) - 2.2.6-0
+
+The packages in the `rospack` repository were released into the `indigo` distro by running `/usr/bin/bloom-release -r indigo -t indigo rospack` on `Wed, 09 Mar 2016 19:43:22 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.2.5-0`
+- old version: `2.2.5-0`
+- new version: `2.2.6-0`
+
+Versions of tools used:
+
+- bloom version: `0.5.21`
+- catkin_pkg version: `0.2.10`
+- rosdep version: `0.11.4`
+- rosdistro version: `0.4.4`
+- vcstools version: `0.1.38`
+
+
 ## rospack (jade) - 2.3.0-0
 
 The packages in the `rospack` repository were released into the `jade` distro by running `/usr/bin/bloom-release -r jade -t jade rospack` on `Wed, 09 Mar 2016 19:40:13 -0000`
