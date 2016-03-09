@@ -73,6 +73,9 @@
 
 /* re-define some String functions for python 2.x */
 #if PY_VERSION_HEX < 0x03000000
+#undef PyBytes_AsString
+#undef PyUnicode_AsUTF8
+#undef PyUnicode_FromString
 #define PyBytes_AsString PyString_AsString
 #define PyUnicode_AsUTF8 PyString_AsString
 #define PyUnicode_FromString PyString_FromString
@@ -1285,7 +1288,10 @@ Rosstackage::depsOnDetail(const std::string& name, bool direct,
   // No recrawl here, because depends-on always forces a crawl at the
   // start.
   if(!stackages_.count(name))
-    logWarn(std::string("no such package ") + name);
+  {
+    logError(std::string("no such package ") + name);
+    return false;
+  }
   try
   {
     for(std::tr1::unordered_map<std::string, Stackage*>::const_iterator it = stackages_.begin();
@@ -1407,6 +1413,7 @@ Rosstackage::addStackage(const std::string& path)
   if((manifest_name_ == ROSSTACK_MANIFEST_NAME && stackage->isPackage()) ||
      (manifest_name_ == ROSPACK_MANIFEST_NAME && stackage->isStack()))
   {
+    delete stackage;
     return;
   }
 
@@ -1419,6 +1426,7 @@ Rosstackage::addStackage(const std::string& path)
       dups_[stackage->name_] = dups;
     }
     dups_[stackage->name_].push_back(stackage->path_);
+    delete stackage;
     return;
   }
 
@@ -2272,7 +2280,7 @@ Rospack::usage()
           "  Extra options:\n"
           "    -q     Quiets error reports.\n\n"
           " If [package] is omitted, the current working directory\n"
-          " is used (if it contains a manifest.xml).\n\n";
+          " is used (if it contains a package.xml or manifest.xml).\n\n";
 }
 
 std::string Rospack::get_manifest_type()
