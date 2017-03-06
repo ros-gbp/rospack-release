@@ -2,6 +2,10 @@
 Changelog for package rospack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.8 (2017-03-06)
+------------------
+* make some deps* functions public (`#65 <https://github.com/ros/rospack/pull/65>`_)
+
 2.2.7 (2016-06-27)
 ------------------
 * allow caching of rospack results (`#49 <https://github.com/ros/rospack/issues/49>`_)
