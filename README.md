@@ -1,3 +1,26 @@
+## rospack (jade) - 2.3.3-0
+
+The packages in the `rospack` repository were released into the `jade` distro by running `/usr/bin/bloom-release -r jade -t jade rospack` on `Mon, 06 Mar 2017 17:04:24 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.3.0-0`
+- old version: `2.3.0-0`
+- new version: `2.3.3-0`
+
+Versions of tools used:
+
+- bloom version: `0.5.24`
+- catkin_pkg version: `0.3.1`
+- rosdep version: `0.11.5`
+- rosdistro version: `0.6.1`
+- vcstools version: `0.1.39`
+
+
 ## rospack (lunar) - 2.4.1-0
 
 The packages in the `rospack` repository were released into the `lunar` distro by running `/usr/bin/bloom-release -r lunar -t lunar rospack` on `Mon, 27 Feb 2017 19:32:56 -0000`
