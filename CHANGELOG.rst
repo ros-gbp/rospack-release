@@ -2,6 +2,18 @@
 Changelog for package rospack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.3 (2017-03-06)
+------------------
+* make some deps* functions public (`#65 <https://github.com/ros/rospack/pull/65>`_)
+
+2.3.2 (2017-02-14)
+------------------
+* add license field in Stackage class (`#66 <https://github.com/ros/rospack/issues/66>`_)
+
+2.3.1 (2016-09-02)
+------------------
+* fix FTBFS on hurd-i386 (`#64 <https://github.com/ros/rospack/issues/64>`_)
+
 2.3.0 (2016-03-09)
 ------------------
 * allow caching of rospack results (`#49 <https://github.com/ros/rospack/issues/49>`_)
