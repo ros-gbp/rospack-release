@@ -1,3 +1,26 @@
+## rospack (lunar) - 2.4.2-0
+
+The packages in the `rospack` repository were released into the `lunar` distro by running `/usr/bin/bloom-release -r lunar -t lunar rospack` on `Thu, 27 Jul 2017 14:52:32 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.4.1-0`
+- old version: `2.4.1-0`
+- new version: `2.4.2-0`
+
+Versions of tools used:
+
+- bloom version: `0.5.26`
+- catkin_pkg version: `0.3.5`
+- rosdep version: `0.11.5`
+- rosdistro version: `0.6.2`
+- vcstools version: `0.1.39`
+
+
 ## rospack (indigo) - 2.2.8-0
 
 The packages in the `rospack` repository were released into the `indigo` distro by running `/usr/bin/bloom-release -r indigo -t indigo rospack` on `Mon, 06 Mar 2017 17:19:49 -0000`
