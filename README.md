@@ -1,3 +1,26 @@
+## rospack (kinetic) - 2.4.4-0
+
+The packages in the `rospack` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release -r kinetic -t kinetic rospack` on `Thu, 16 Nov 2017 23:10:24 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.3.3-0`
+- old version: `2.3.3-0`
+- new version: `2.4.4-0`
+
+Versions of tools used:
+
+- bloom version: `0.6.1`
+- catkin_pkg version: `0.3.9`
+- rosdep version: `0.11.8`
+- rosdistro version: `0.6.2`
+- vcstools version: `0.1.39`
+
+
 ## rospack (lunar) - 2.4.3-0
 
 The packages in the `rospack` repository were released into the `lunar` distro by running `/usr/bin/bloom-release -r lunar -t lunar rospack` on `Thu, 12 Oct 2017 17:17:27 -0000`
