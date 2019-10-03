@@ -2,17 +2,48 @@
 Changelog for package rospack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.4.5 (2019-06-07)
+2.5.4 (2019-10-03)
 ------------------
-* add ros_environment as dependency (`#97 <https://github.com/ros/rospack/issues/97>`_)
+* use condition attributes to specify Python 2 and 3 dependencies (`#107 <https://github.com/ros/rospack/issues/107>`_)
+* for fixing potential TOCTOU issue (`#104 <https://github.com/ros/rospack/issues/104>`_)
+* fixing mkstemp without securely setting mask/unmask (`#106 <https://github.com/ros/rospack/issues/106>`_)
+* fixing code unreachable (`#105 <https://github.com/ros/rospack/issues/105>`_)
 
-2.4.4 (2017-11-16)
+2.5.3 (2019-03-04)
 ------------------
-* workaround console_bridge macros (`#85 <https://github.com/ros/rospack/issues/85>`_)
+* enable to run rosstack depends for wetpackages (`#91 <https://github.com/ros/rospack/issues/91>`_)
 
-2.3.3 (2017-03-06)
+2.5.2 (2018-09-05)
+------------------
+* add delete whitespace settings for backward compatibility, regression from 2.4.0 (`#94 <https://github.com/ros/rospack/issues/94>`_)
+* fix build issue on Windows (`#90 <https://github.com/ros/rospack/issues/90>`_)
+* use namespace to avoid name conflict between tinyxml2 and msxml (`#89 <https://github.com/ros/rospack/issues/89>`_)
+
+2.5.1 (2018-05-31)
+------------------
+* add run_depend on ros_environment (`#88 <https://github.com/ros/rospack/issues/88>`_)
+
+2.5.0 (2018-01-30)
+------------------
+* skip warning if permission to read directory was denied (`#87 <https://github.com/ros/rospack/issues/87>`_)
+
+2.4.3 (2017-10-12)
+------------------
+* add README.md with notes about tinyxml2 (`#82 <https://github.com/ros/rospack/issues/82>`_)
+* replace references to deprecated Boost.TR1 (`#80 <https://github.com/ros/rospack/issues/80>`_)
+* fix Python.h redefining pre-processor definitions (`#78 <https://github.com/ros/rospack/issues/78>`_)
+
+2.4.2 (2017-07-27)
+------------------
+
+2.4.1 (2017-02-27)
+------------------
+* fix inverted result code check, regression from 2.4.0 (`#70 <https://github.com/ros/rospack/issues/70>`_)
+
+2.4.0 (2017-02-22)
 ------------------
 * make some deps* functions public (`#65 <https://github.com/ros/rospack/pull/65>`_)
+* switch from TinyXML to TinyXML2 (`#62 <https://github.com/ros/rospack/pull/62>`_)
 
 2.3.2 (2017-02-14)
 ------------------

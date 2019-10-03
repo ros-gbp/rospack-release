@@ -33,7 +33,9 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <time.h>
 #include <gtest/gtest.h>
@@ -42,6 +44,19 @@
 #include "rospack/rospack.h"
 #include "utils.h"
 
+#ifdef _WIN32
+int setenv(const char *name, const char *value, int overwrite)
+{
+  if(!overwrite)
+  {
+    size_t envsize = 0;
+    errno_t errcode = getenv_s(&envsize, NULL, 0, name);
+    if(errcode || envsize)
+      return errcode;
+  }
+  return _putenv_s(name, value);
+}
+#endif
 
 TEST(rospack, reentrant)
 {
@@ -226,8 +241,8 @@ int main(int argc, char **argv)
   char buf[1024];
   std::string rr = std::string(getcwd(buf, sizeof(buf))) + "/test2";
   setenv("ROS_PACKAGE_PATH", rr.c_str(), 1);
-  char path[PATH_MAX];
-  if(getcwd(path,sizeof(path)))
+  char *path = getcwd(NULL, 0);
+  if(path)
   {
     boost::filesystem::path p(path);
     p = p.parent_path();
@@ -238,6 +253,7 @@ int main(int argc, char **argv)
     setenv("PATH", newpath.c_str(), 1);
   }
 
+  free(path);
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
