@@ -179,19 +179,17 @@ class Stackage
       assert(manifest_loaded_);
       // get name from package.xml instead of folder name
       tinyxml2::XMLElement* root = get_manifest_root(this);
-      for(tinyxml2::XMLElement* el = root->FirstChildElement("name"); el; el = el->NextSiblingElement("name"))
-      {
+      tinyxml2::XMLElement* el = root->FirstChildElement("name");
+      if(el)
         name_ = el->GetText();
-        break;
-      }
       // Get license texts, where there may be multiple elements for.
       std::string tagname_license = "license";
-      for(tinyxml2::XMLElement* el = root->FirstChildElement(tagname_license.c_str()); el; el = el->NextSiblingElement(tagname_license.c_str()))
+      for(el = root->FirstChildElement(tagname_license.c_str()); el; el = el->NextSiblingElement(tagname_license.c_str()))
       {
         licenses_.push_back(el->GetText());
       }
       // check if package is a metapackage
-      for(tinyxml2::XMLElement* el = root->FirstChildElement("export"); el; el = el->NextSiblingElement("export"))
+      for(el = root->FirstChildElement("export"); el; el = el->NextSiblingElement("export"))
       {
         if(el->FirstChildElement("metapackage"))
         {
@@ -2061,7 +2059,9 @@ Rosstackage::writeCache()
     {
       FILE *cache = fopen(tmp_cache_path, "w");
 #else
+    mode_t mask = umask(S_IRWXU);
     int fd = mkstemp(tmp_cache_path);
+    umask(mask);
     if (fd < 0)
     {
       fprintf(stderr, "[rospack] Unable to create temporary cache file %s: %s\n",
@@ -2112,19 +2112,32 @@ Rosstackage::validateCache()
     cache_max_age = atof(user_cache_time_str);
   if(cache_max_age == 0.0)
     return NULL;
-  struct stat s;
-  if(stat(cache_path.c_str(), &s) == 0)
-  {
-    double dt = difftime(time(NULL), s.st_mtime);
-    // Negative cache_max_age means it's always new enough.  It's dangerous
-    // for the user to set this, but rosbash uses it.
-    if ((cache_max_age > 0.0) && (dt > cache_max_age))
-      return NULL;
-  }
+  struct stat ls;
+  if(lstat(cache_path.c_str(), &ls) == -1)
+    return NULL;
+
+  double dt = difftime(time(NULL), ls.st_mtime);
+  // Negative cache_max_age means it's always new enough.  It's dangerous
+  // for the user to set this, but rosbash uses it.
+  if ((cache_max_age > 0.0) && (dt > cache_max_age))
+    return NULL;
+
   // try to open it
   FILE* cache = fopen(cache_path.c_str(), "r");
   if(!cache)
     return NULL; // it's not readable by us. sad.
+
+  struct stat s;
+  if(fstat(fileno(cache), &s) == -1)
+  {
+    fclose(cache);
+    return NULL;
+  }
+  if (ls.st_mode != s.st_mode || ls.st_ino != s.st_ino)
+  {
+    fclose(cache);
+    throw Exception("cache stat mode does not match before open");
+  }
 
   // see if ROS_PACKAGE_PATH matches
   char linebuf[30000];
