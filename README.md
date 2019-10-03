@@ -1,3 +1,26 @@
+## rospack (melodic) - 2.5.4-1
+
+The packages in the `rospack` repository were released into the `melodic` distro by running `/home/dthomas/ros/github/ros-infrastructure/bloom/scripts/bloom-release -r melodic -t melodic rospack` on `Thu, 03 Oct 2019 23:58:14 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.5.3-0`
+- old version: `2.5.3-0`
+- new version: `2.5.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.6.9`
+- catkin_pkg version: `0.4.13`
+- rosdep version: `0.16.1`
+- rosdistro version: `0.7.4`
+- vcstools version: `0.1.42`
+
+
 ## rospack (kinetic) - 2.4.5-1
 
 The packages in the `rospack` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release -r kinetic -t kinetic rospack` on `Sat, 08 Jun 2019 04:55:34 -0000`
