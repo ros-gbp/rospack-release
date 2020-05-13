@@ -33,9 +33,12 @@ main(int argc, char** argv)
 {
   rospack::Rospack rp;
   std::string output;
-  bool result = rospack::rospack_run(argc, argv, rp, output);
-  if (!output.empty())
+  if(!rospack::rospack_run(argc, argv, rp, output))
+    return 1;
+  else
+  {
     printf("%s", output.c_str());
-  return result ? 0 : 1;
+    return 0;
+  }
 }
 

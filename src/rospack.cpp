@@ -62,7 +62,6 @@
 
 #include <algorithm>
 #include <climits>
-#include <iostream>
 
 #include <sys/stat.h>
 #include <stdio.h>
@@ -558,7 +557,6 @@ Rosstackage::deps(const std::string& name, bool direct,
   std::vector<Stackage*> stackages;
   // Disable errors for the first try
   bool old_quiet = quiet_;
-  bool result = true;
   setQuiet(true);
   if(!depsDetail(name, direct, stackages))
   {
@@ -567,14 +565,14 @@ Rosstackage::deps(const std::string& name, bool direct,
     stackages.clear();
     setQuiet(old_quiet);
     if(!depsDetail(name, direct, stackages))
-      result = false;
+      return false;
   }
   setQuiet(old_quiet);
   for(std::vector<Stackage*>::const_iterator it = stackages.begin();
       it != stackages.end();
       ++it)
     deps.push_back((*it)->name_);
-  return result;
+  return true;
 }
 
 bool
@@ -582,12 +580,13 @@ Rosstackage::depsOn(const std::string& name, bool direct,
                        std::vector<std::string>& deps)
 {
   std::vector<Stackage*> stackages;
-  bool result = depsOnDetail(name, direct, stackages);
+  if(!depsOnDetail(name, direct, stackages))
+    return false;
   for(std::vector<Stackage*>::const_iterator it = stackages.begin();
       it != stackages.end();
       ++it)
     deps.push_back((*it)->name_);
-  return result;
+  return true;
 }
 
 bool
@@ -597,10 +596,9 @@ Rosstackage::depsIndent(const std::string& name, bool direct,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     boost::unordered_set<Stackage*> deps_hash;
     std::vector<std::string> indented_deps;
@@ -615,7 +613,7 @@ Rosstackage::depsIndent(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 bool
@@ -630,11 +628,10 @@ Rosstackage::depsWhy(const std::string& from,
   if(!to_s)
     return false;
 
-  bool result = true;
   std::list<std::list<Stackage*> > acc_list;
   try
   {
-    result = depsWhyDetail(from_s, to_s, acc_list);
+    depsWhyDetail(from_s, to_s, acc_list);
   }
   catch(Exception& e)
   {
@@ -658,7 +655,7 @@ Rosstackage::depsWhy(const std::string& from,
     }
     output.append("\n");
   }
-  return result;
+  return true;
 }
 
 bool
@@ -668,10 +665,9 @@ Rosstackage::depsManifests(const std::string& name, bool direct,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     gatherDeps(stackage, direct, POSTORDER, deps_vec);
     for(std::vector<Stackage*>::const_iterator it = deps_vec.begin();
@@ -684,7 +680,7 @@ Rosstackage::depsManifests(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 bool
@@ -694,10 +690,9 @@ Rosstackage::rosdeps(const std::string& name, bool direct,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     // rosdeps include the current package
     deps_vec.push_back(stackage);
@@ -732,7 +727,7 @@ Rosstackage::rosdeps(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 void
@@ -769,10 +764,9 @@ Rosstackage::vcs(const std::string& name, bool direct,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     // vcs include the current package
     deps_vec.push_back(stackage);
@@ -808,7 +802,7 @@ Rosstackage::vcs(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 bool
@@ -826,10 +820,9 @@ Rosstackage::cpp_exports(const std::string& name, const std::string& type,
   static PyObject* pDict;
   static PyObject* pFunc;
 
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     if(!deps_only)
       deps_vec.push_back(stackage);
@@ -920,7 +913,7 @@ Rosstackage::cpp_exports(const std::string& name, const std::string& type,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 bool
@@ -995,10 +988,9 @@ Rosstackage::exports(const std::string& name, const std::string& lang,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     if(!deps_only)
       deps_vec.push_back(stackage);
@@ -1018,7 +1010,7 @@ Rosstackage::exports(const std::string& name, const std::string& lang,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 bool
@@ -1096,7 +1088,8 @@ Rosstackage::plugins(const std::string& name, const std::string& attrib,
 {
   // Find everybody who depends directly on the package in question
   std::vector<Stackage*> stackages;
-  bool result = depsOnDetail(name, true, stackages, true);
+  if(!depsOnDetail(name, true, stackages, true))
+    return false;
   // Also look in the package itself
   boost::unordered_map<std::string, Stackage*>::const_iterator it = stackages_.find(name);
   if(it != stackages_.end())
@@ -1109,7 +1102,8 @@ Rosstackage::plugins(const std::string& name, const std::string& attrib,
   if(top.size())
   {
     std::vector<Stackage*> top_deps;
-    result &= depsDetail(top, false, top_deps);
+    if(!depsDetail(top, false, top_deps))
+      return false;
     boost::unordered_set<Stackage*> top_deps_set;
     for(std::vector<Stackage*>::iterator it = top_deps.begin();
         it != top_deps.end();
@@ -1144,16 +1138,13 @@ Rosstackage::plugins(const std::string& name, const std::string& attrib,
         {
           std::string expanded_str;
           if(!expandExportString(*it, att_str, expanded_str))
-          {
-            result = false;
-            continue;
-          }
+            return false;
           flags.push_back((*it)->name_ + " " + expanded_str);
         }
       }
     }
   }
-  return result;
+  return true;
 }
 
 bool
@@ -1163,10 +1154,9 @@ Rosstackage::depsMsgSrv(const std::string& name, bool direct,
   Stackage* stackage = findWithRecrawl(name);
   if(!stackage)
     return false;
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     gatherDeps(stackage, direct, POSTORDER, deps_vec);
     for(std::vector<Stackage*>::const_iterator it = deps_vec.begin();
@@ -1190,7 +1180,7 @@ Rosstackage::depsMsgSrv(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
 /////////////////////////////////////////////////////////////
@@ -1241,10 +1231,9 @@ Rosstackage::depsDetail(const std::string& name, bool direct,
     return false;
   }
   Stackage* stackage = stackages_[name];
-  bool result = true;
   try
   {
-    result = computeDeps(stackage);
+    computeDeps(stackage);
     std::vector<Stackage*> deps_vec;
     gatherDeps(stackage, direct, POSTORDER, deps_vec);
     for(std::vector<Stackage*>::const_iterator it = deps_vec.begin();
@@ -1257,15 +1246,15 @@ Rosstackage::depsDetail(const std::string& name, bool direct,
     logError(e.what());
     return false;
   }
-  return result;
+  return true;
 }
 
-bool
+void
 Rosstackage::depsWhyDetail(Stackage* from,
                            Stackage* to,
                            std::list<std::list<Stackage*> >& acc_list)
 {
-  bool result = computeDeps(from);
+  computeDeps(from);
   for(std::vector<Stackage*>::const_iterator it = from->deps_.begin();
       it != from->deps_.end();
       ++it)
@@ -1280,7 +1269,7 @@ Rosstackage::depsWhyDetail(Stackage* from,
     else
     {
       std::list<std::list<Stackage*> > l;
-      result &= depsWhyDetail(*it, to, l);
+      depsWhyDetail(*it, to, l);
       for(std::list<std::list<Stackage*> >::iterator iit = l.begin();
           iit != l.end();
           ++iit)
@@ -1290,7 +1279,6 @@ Rosstackage::depsWhyDetail(Stackage* from,
       }
     }
   }
-  return result;
 }
 
 bool
@@ -1584,11 +1572,13 @@ Rosstackage::loadManifest(Stackage* stackage)
   stackage->manifest_loaded_ = true;
 }
 
-bool
+void
 Rosstackage::computeDeps(Stackage* stackage, bool ignore_errors, bool ignore_missing)
 {
   if(stackage->deps_computed_)
-    return true;
+    return;
+
+  stackage->deps_computed_ = true;
 
   try
   {
@@ -1597,34 +1587,31 @@ Rosstackage::computeDeps(Stackage* stackage, bool ignore_errors, bool ignore_mis
   }
   catch(Exception& e)
   {
-    if(!ignore_errors && !quiet_)
-      logError(e.what());
-    return false;
+    if(ignore_errors)
+      return;
+    else
+      throw e;
   }
   if (!stackage->is_wet_package_)
   {
-    if (!computeDepsInternal(stackage, ignore_errors, "depend", ignore_missing))
-      return false;
-    stackage->deps_computed_ = true;
-    return true;
+    computeDepsInternal(stackage, ignore_errors, "depend", ignore_missing);
   }
-  // package format 1 tags
-  bool result = computeDepsInternal(stackage, ignore_errors, "run_depend", ignore_missing);
-  // package format 2 tags
-  result &= computeDepsInternal(stackage, ignore_errors, "exec_depend", ignore_missing);
-  result &= computeDepsInternal(stackage, ignore_errors, "depend", ignore_missing);
-  if (result)
-    stackage->deps_computed_ = true;
-  return result;
+  else
+  {
+    // package format 1 tags
+    computeDepsInternal(stackage, ignore_errors, "run_depend", ignore_missing);
+    // package format 2 tags
+    computeDepsInternal(stackage, ignore_errors, "exec_depend", ignore_missing);
+    computeDepsInternal(stackage, ignore_errors, "depend", ignore_missing);
+  }
 }
 
-bool
+void
 Rosstackage::computeDepsInternal(Stackage* stackage, bool ignore_errors, const std::string& depend_tag, bool ignore_missing)
 {
   tinyxml2::XMLElement* root;
   root = get_manifest_root(stackage);
 
-  bool result = true;
   const char* dep_pkgname;
   for(tinyxml2::XMLElement *dep_ele = root->FirstChildElement(depend_tag.c_str());
       dep_ele;
@@ -1640,20 +1627,18 @@ Rosstackage::computeDepsInternal(Stackage* stackage, bool ignore_errors, const s
     }
     if(!dep_pkgname)
     {
-      result = false;
-      if(!ignore_errors && !quiet_)
+      if(!ignore_errors)
       {
         std::string errmsg = std::string("bad depend syntax (no 'package/stack' attribute) in manifest ") + stackage->name_ + " at " + stackage->manifest_path_;
-        logError(errmsg);
+        throw Exception(errmsg);
       }
     }
     else if(dep_pkgname == stackage->name_)
     {
-      result = false;
-      if(!ignore_errors && !quiet_)
+      if(!ignore_errors)
       {
         std::string errmsg = get_manifest_type() + " '" + stackage->name_ + "' depends on itself";
-        logError(errmsg);
+        throw Exception(errmsg);
       }
     }
     else if(!stackages_.count(dep_pkgname))
@@ -1662,16 +1647,15 @@ Rosstackage::computeDepsInternal(Stackage* stackage, bool ignore_errors, const s
       {
         continue;
       }
-      result = false;
       if(ignore_errors)
       {
         Stackage* dep =  new Stackage(dep_pkgname, "", "", "");
         stackage->deps_.push_back(dep);
       }
-      else if (!quiet_)
+      else
       {
         std::string errmsg = get_manifest_type() + " '" + stackage->name_ + "' depends on non-existent package '" + dep_pkgname + "' and rosdep claims that it is not a system dependency. Check the ROS_PACKAGE_PATH or try calling 'rosdep update'";
-        logError(errmsg);
+        throw Exception(errmsg);
       }
     }
     else
@@ -1680,11 +1664,10 @@ Rosstackage::computeDepsInternal(Stackage* stackage, bool ignore_errors, const s
       if (std::find(stackage->deps_.begin(), stackage->deps_.end(), dep) == stackage->deps_.end())
       {
         stackage->deps_.push_back(dep);
-        result &= computeDeps(dep, ignore_errors, ignore_missing);
+        computeDeps(dep, ignore_errors, ignore_missing);
       }
     }
   }
-  return result;
 }
 
 void
@@ -1873,7 +1856,7 @@ _gatherDepsFull(Stackage* stackage, bool direct,
       for(int i=0; i<depth; i++)
         indented_dep.append("  ");
       indented_dep.append((*it)->name_);
-      indented_deps.push_back(indented_dep);
+        indented_deps.push_back(indented_dep);
     }
 
     bool first = (deps_hash.find(*it) == deps_hash.end());

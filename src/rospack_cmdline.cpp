@@ -311,7 +311,8 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> deps;
-    bool result = rp.depsOn("roslang", true, deps);
+    if(!rp.depsOn("roslang", true, deps))
+      return false;
     const char* ros_lang_disable;
     if((ros_lang_disable = getenv("ROS_LANG_DISABLE")))
     {
@@ -345,7 +346,7 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       output.append(*it);
     }
     output.append("\n");
-    return result;
+    return true;
   }
   // COMMAND: depends [package] (alias: deps)
   else if(command == "depends" || command == "deps" ||
@@ -363,12 +364,13 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> deps;
-    bool result = rp.deps(package, (command == "depends1" || command == "deps1"), deps);
+    if(!rp.deps(package, (command == "depends1" || command == "deps1"), deps))
+      return false;
     for(std::vector<std::string>::const_iterator it = deps.begin();
         it != deps.end();
         ++it)
       output.append(*it + "\n");
-    return result;
+    return true;
   }
   // COMMAND: depends-manifests [package] (alias: deps-manifests)
   else if(command == "depends-manifests" || command == "deps-manifests")
@@ -385,7 +387,8 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> manifests;
-    bool result = rp.depsManifests(package, false, manifests);
+    if(!rp.depsManifests(package, false, manifests))
+      return false;
     for(std::vector<std::string>::const_iterator it = manifests.begin();
         it != manifests.end();
         ++it)
@@ -395,7 +398,7 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       output.append(*it);
     }
     output.append("\n");
-    return result;
+    return true;
   }
   // COMMAND: depends-msgsrv [package] (alias: deps-msgsrv)
   else if(rp.getName() == ROSPACK_NAME &&
@@ -413,7 +416,8 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> gens;
-    bool result = rp.depsMsgSrv(package, false, gens);
+    if(!rp.depsMsgSrv(package, false, gens))
+      return false;
     for(std::vector<std::string>::const_iterator it = gens.begin();
         it != gens.end();
         ++it)
@@ -423,7 +427,7 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       output.append(*it);
     }
     output.append("\n");
-    return result;
+    return true;
   }
   // COMMAND: depends-indent [package] (alias: deps-indent)
   else if(command == "depends-indent" || command == "deps-indent")
@@ -440,12 +444,13 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> deps;
-    bool result = rp.depsIndent(package, false, deps);
+    if(!rp.depsIndent(package, false, deps))
+      return false;
     for(std::vector<std::string>::const_iterator it = deps.begin();
         it != deps.end();
         ++it)
       output.append(*it + "\n");
-    return result;
+    return true;
   }
   // COMMAND: depends-why [package] (alias: deps-why)
   else if(command == "depends-why" || command == "deps-why")
@@ -462,9 +467,10 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::string why_output;
-    bool result = rp.depsWhy(package, target, why_output);
+    if(!rp.depsWhy(package, target, why_output))
+      return false;
     output.append(why_output);
-    return result;
+    return true;
   }
   // COMMAND: rosdep [package] (alias: rosdeps)
   // COMMAND: rosdep0 [package] (alias: rosdeps0)
@@ -484,12 +490,13 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::set<std::string> rosdeps;
-    bool result = rp.rosdeps(package, (command == "rosdep0" || command == "rosdeps0"), rosdeps);
+    if(!rp.rosdeps(package, (command == "rosdep0" || command == "rosdeps0"), rosdeps))
+      return false;
     for(std::set<std::string>::const_iterator it = rosdeps.begin();
         it != rosdeps.end();
         ++it)
       output.append(*it + "\n");
-    return result;
+    return true;
   }
   // COMMAND: vcs [package]
   // COMMAND: vcs0 [package]
@@ -508,12 +515,13 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> vcs;
-    bool result = rp.vcs(package, (command == "vcs0"), vcs);
+    if(!rp.vcs(package, (command == "vcs0"), vcs))
+      return false;
     for(std::vector<std::string>::const_iterator it = vcs.begin();
         it != vcs.end();
         ++it)
       output.append(*it + "\n");
-    return result;
+    return true;
   }
   // COMMAND: depends-on [package]
   // COMMAND: depends-on1 [package]
@@ -531,12 +539,13 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> deps;
-    bool result = rp.depsOn(package, (command == "depends-on1"), deps);
+    if(!rp.depsOn(package, (command == "depends-on1"), deps))
+      return false;
     for(std::vector<std::string>::const_iterator it = deps.begin();
         it != deps.end();
         ++it)
       output.append(*it + "\n");
-    return result;
+    return true;
   }
   // COMMAND: export [--deps-only] --lang=<lang> --attrib=<attrib> [package]
   else if(rp.getName() == ROSPACK_NAME && command == "export")
@@ -552,7 +561,8 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       return false;
     }
     std::vector<std::string> flags;
-    bool result = rp.exports(package, lang, attrib, deps_only, flags);
+    if(!rp.exports(package, lang, attrib, deps_only, flags))
+      return false;
     for(std::vector<std::string>::const_iterator it = flags.begin();
         it != flags.end();
         ++it)
@@ -562,7 +572,7 @@ rospack_run(int argc, char** argv, rospack::Rosstackage& rp, std::string& output
       output.append(*it);
     }
     output.append("\n");
-    return result;
+    return true;
   }
   // COMMAND: plugins --attrib=<attrib> [--top=<toppkg>] [package]
   else if(rp.getName() == ROSPACK_NAME && command == "plugins")

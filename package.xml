@@ -4,7 +4,7 @@
   schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>rospack</name>
-  <version>2.6.2</version>
+  <version>2.5.6</version>
   <description>ROS Package Tool</description>
   <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
   <license>BSD</license>
@@ -17,9 +17,7 @@
   <author>Morgan Quigley</author>
   <author>Dirk Thomas</author>
 
-  <depend>libboost-filesystem-dev</depend>
-  <depend>libboost-program-options-dev</depend>
-  <depend>libboost-system-dev</depend>
+  <depend>boost</depend>
   <depend>pkg-config</depend>
   <depend condition="$ROS_PYTHON_VERSION == 2">python</depend>
   <depend condition="$ROS_PYTHON_VERSION == 3">python3</depend>

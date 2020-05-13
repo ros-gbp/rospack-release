@@ -2,17 +2,9 @@
 Changelog for package rospack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.6.2 (2020-05-13)
+2.5.6 (2020-05-13)
 ------------------
 * fix umask for rospack cache files, regression from 2.5.4 (`#119 <https://github.com/ros/rospack/issues/119>`_)
-
-2.6.1 (2020-04-06)
-------------------
-* best effort output on error (`#113 <https://github.com/ros/rospack/issues/113>`_)
-
-2.6.0 (2020-03-02)
-------------------
-* declare specific boost dependencies (`#115 <https://github.com/ros/rospack/issues/115>`_)
 
 2.5.5 (2020-01-24)
 ------------------
