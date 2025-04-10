@@ -1,3 +1,26 @@
+## rospack (noetic) - 2.6.3-1
+
+The packages in the `rospack` repository were released into the `noetic` distro by running `/usr/bin/bloom-release -r noetic rospack` on `Thu, 10 Apr 2025 21:59:15 -0000`
+
+The `rospack` package was released.
+
+Version of package(s) in repository `rospack`:
+
+- upstream repository: https://github.com/ros/rospack.git
+- release repository: https://github.com/ros-gbp/rospack-release.git
+- rosdistro version: `2.6.2-1`
+- old version: `2.6.2-1`
+- new version: `2.6.3-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.25.1`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## rospack (melodic) - 2.5.6-1
 
 The packages in the `rospack` repository were released into the `melodic` distro by running `/usr/bin/bloom-release -r melodic -t melodic rospack` on `Wed, 13 May 2020 18:17:00 -0000`
